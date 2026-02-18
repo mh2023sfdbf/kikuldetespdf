@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minimal + Gen Z pop: electric lime, bold black borders, pro designer */
+:root {
+  --accent: 91 90 247;
+  --accent-hover: 79 78 220;
+  --foreground: 15 15 15;
+  --muted: 115 115 115;
+  --background: 251 248 243;
+  --surface: 255 255 255;
+  /* Gen Z pop */
+  --pop: 184 255 60;
+  --pop-hover: 163 230 53;
+  --pop-muted: 184 255 60 / 0.2;
+  --border-bold: 10 10 10;
+  /* One minimal font throughout: same as lead text (system sans) */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: var(--font-sans);
+  --calm-bg: #fbf8f3;
+}
+
+body {
+  color: rgb(var(--foreground));
+  background: var(--calm-bg);
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.62;
+  letter-spacing: 0.01em;
+}
+
+/* Pro type hierarchy – same minimal font throughout */
+.type-display {
+  font-family: var(--font-sans);
+  font-size: clamp(1.75rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+.type-heading-1 {
+  font-family: var(--font-sans);
+  font-size: 1.75rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+.type-heading-2 {
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+.type-body {
+  font-size: 1rem;
+  line-height: 1.62;
+}
+.type-body-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.type-caption {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl shadow-glass rounded-2xl;
+    border: 3px solid rgb(var(--border-bold));
+  }
+  .glass-card {
+    @apply bg-white shadow-soft rounded-2xl;
+    border: 3px solid rgb(var(--border-bold));
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-body-sm font-medium
+           transition duration-200;
+    background: rgb(var(--pop));
+    color: rgb(var(--foreground));
+    border: 3px solid rgb(var(--border-bold));
+    box-shadow: 4px 4px 0 rgb(var(--border-bold));
+  }
+  .btn-primary:hover {
+    background: rgb(var(--pop-hover));
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgb(var(--border-bold));
+  }
+  .btn-primary-accent {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium
+           transition-all duration-200;
+    background: rgb(var(--pop));
+    color: rgb(var(--foreground));
+    border: 3px solid rgb(var(--border-bold));
+    box-shadow: 4px 4px 0 rgb(var(--border-bold));
+  }
+  .btn-primary-accent:hover {
+    background: rgb(var(--pop-hover));
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgb(var(--border-bold));
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium
+           transition duration-200;
+    color: rgb(var(--foreground));
+    border: 2px solid transparent;
+  }
+  .btn-ghost:hover {
+    @apply bg-pop-muted border-2 border-neutral-900;
+  }
+  .nav-link-calm {
+    @apply relative px-1 transition duration-200 font-medium;
+    color: rgb(var(--muted));
+  }
+  .nav-link-calm:hover {
+    color: rgb(var(--foreground));
+  }
+  .nav-link-calm::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 3px;
+    background: rgb(var(--pop));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-link-calm:hover::after {
+    transform: scaleX(1);
+  }
+  .footer-link {
+    @apply relative inline-block;
+  }
+  .footer-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: rgb(var(--pop));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .footer-link:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slideUp {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}

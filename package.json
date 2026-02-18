@@ -1,0 +1,50 @@
+{
+  "name": "kikuldetesi-sablon",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf .next",
+    "kill:3004": "(lsof -ti tcp:3004 | xargs kill -9) 2>/dev/null || true",
+    "kill:3005": "(lsof -ti tcp:3005 | xargs kill -9) 2>/dev/null || true",
+    "validate:hero-images": "node scripts/validate-hero-images.js",
+    "dev": "npm run kill:3004 && npm run clean && next dev -p 3004",
+    "dev:clean": "npm run kill:3004 && npm run clean && next dev -p 3004",
+    "dev:doctor": "npm run kill:3004 && npm run clean && next dev -p 3004",
+    "dev:alt": "npm run kill:3005 && npm run clean && next dev -p 3005",
+    "preview": "npm run kill:3004 && npm run clean && next build && next start -p 3004",
+    "preview:alt": "npm run kill:3005 && npm run clean && next build && next start -p 3005",
+    "pdf:regen-examples": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\",\"moduleResolution\":\"node\"}' node -r ts-node/register/transpile-only scripts/generate-example-pdfs.ts",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:pdf-layout": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\",\"moduleResolution\":\"node\"}' node -r ts-node/register/transpile-only scripts/test-pdf-layout.ts",
+    "test:pdf-visual": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\",\"moduleResolution\":\"node\"}' node -r ts-node/register/transpile-only scripts/test-pdf-visual.ts"
+  },
+  "dependencies": {
+    "@fontsource/noto-sans": "^5.2.10",
+    "@hookform/resolvers": "^5.2.2",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "framer-motion": "^12.34.0",
+    "lucide-react": "^0.563.0",
+    "next": "^14.0.0",
+    "pdf-lib": "^1.17.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.71.1",
+    "tailwind-merge": "^3.4.0",
+    "xlsx": "^0.18.5",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0"
+  }
+}
