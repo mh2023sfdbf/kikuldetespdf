@@ -109,12 +109,12 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedLinks: [
       { href: '/kulfoldi-kikuldetes', label: 'Külföldi kiküldetés' },
-      { href: '/koltegelszamolas-kikuldetes', label: 'Költségelszámolás' },
+      { href: '/koltsegelszamolas-kikuldetes', label: 'Költségelszámolás' },
       { href: '/generate', label: 'PDF generálás' },
     ],
   },
   {
-    slug: 'koltegelszamolas-konyveles-kikuldetes',
+    slug: 'koltsegelszamolas-konyveles-kikuldetes',
     title: 'Költségelszámolás és könyvelés kiküldetéshez – szabályok és sablonok',
     metaDescription:
       'Kiküldetési költségelszámolás és könyvelés: napidíj, költségtérítés, bizonylatok, NAV. Hogyan készíts könyvelésre alkalmas dokumentumot egyszerűen.',
@@ -143,7 +143,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     relatedLinks: [
-      { href: '/koltegelszamolas-kikuldetes', label: 'Költségelszámolás kiküldetéshez' },
+      { href: '/koltsegelszamolas-kikuldetes', label: 'Költségelszámolás kiküldetéshez' },
       { href: '/kikuldetesi-dokumentumok-konyveleshez', label: 'Dokumentumok a könyveléshez' },
       { href: '/generate', label: 'PDF generálás' },
     ],

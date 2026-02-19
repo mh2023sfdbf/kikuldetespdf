@@ -1,6 +1,11 @@
 import type { MetadataRoute } from 'next'
 
-const BASE = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://kikuldetesi-sablon.vercel.app'
+// Canonical production origin; ignore stale env (e.g. old Vercel URL) so sitemap only lists this domain
+const PRODUCTION_ORIGIN = 'https://kikuldetespdf.hu'
+const BASE =
+  process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://kikuldetespdf.hu') === true
+    ? process.env.NEXT_PUBLIC_BASE_URL.replace(/\/$/, '')
+    : PRODUCTION_ORIGIN
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -12,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/belfoldi-kikuldetes`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/kulfoldi-kikuldetes`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/napidij-elszamolas`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.85 },
-    { url: `${BASE}/koltegelszamolas-kikuldetes`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${BASE}/koltsegelszamolas-kikuldetes`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/kikuldetesi-dokumentumok-konyveleshez`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/legal/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE}/legal/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
@@ -20,6 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/blog/kikuldetesi-rendelveny-mintak-sablonok`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/blog/belfoldi-kikuldetes-lepesrol-lepesre`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/blog/kulfoldi-kikuldetes-dokumentumok`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/blog/koltegelszamolas-konyveles-kikuldetes`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/blog/koltsegelszamolas-konyveles-kikuldetes`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
   ]
 }

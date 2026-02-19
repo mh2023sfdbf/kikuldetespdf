@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function KoltegelszamolasKikuldetesPage() {
+export default function KoltsegelszamolasKikuldetesPage() {
   return (
     <article className="max-w-3xl mx-auto">
       <h1 className="font-heading font-bold text-heading-1 text-neutral-900 mb-4">

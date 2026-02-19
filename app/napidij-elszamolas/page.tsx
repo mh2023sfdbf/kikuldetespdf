@@ -66,7 +66,7 @@ export default function NapidijElszamolasPage() {
       </section>
 
       <p className="text-body-sm text-neutral-600 mt-8">
-        <Link href="/koltegelszamolas-kikuldetes" className="underline underline-offset-2 hover:text-neutral-900">
+        <Link href="/koltsegelszamolas-kikuldetes" className="underline underline-offset-2 hover:text-neutral-900">
           Költségelszámolás kiküldetéshez
         </Link>
         {' · '}

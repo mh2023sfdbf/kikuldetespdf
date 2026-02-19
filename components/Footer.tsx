@@ -5,7 +5,7 @@ const landingPages = [
   { href: '/belfoldi-kikuldetes', label: 'Belföldi kiküldetés' },
   { href: '/kulfoldi-kikuldetes', label: 'Külföldi kiküldetés' },
   { href: '/napidij-elszamolas', label: 'Napidíj elszámolás' },
-  { href: '/koltegelszamolas-kikuldetes', label: 'Költségelszámolás' },
+  { href: '/koltsegelszamolas-kikuldetes', label: 'Költségelszámolás' },
   { href: '/kikuldetesi-dokumentumok-konyveleshez', label: 'Dokumentumok a könyveléshez' },
 ]
 
