@@ -16,14 +16,14 @@ export default function Nav() {
   return (
     <>
       <nav className="bg-[var(--calm-bg)] sticky top-0 z-10 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-          <div className="flex items-center justify-between py-5">
+        <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-12">
+          <div className="flex items-center justify-between py-3 sm:py-5">
             <Link
               href="/"
-              className="flex items-center gap-3 font-sans text-caption uppercase font-medium text-neutral-900 hover:text-neutral-800 transition-colors"
+              className="flex items-center gap-2 sm:gap-3 font-sans text-caption uppercase font-medium text-neutral-900 hover:text-neutral-800 transition-colors min-w-0"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg border-[3px] border-neutral-900 bg-pop shrink-0 text-neutral-900" aria-hidden>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+              <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border-[3px] border-neutral-900 bg-pop shrink-0 text-neutral-900" aria-hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 sm:h-4 sm:w-4">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <path d="M14 2v6h6" />
                   <path d="M16 13H8" />
@@ -31,11 +31,11 @@ export default function Nav() {
                   <path d="M10 9H8" />
                 </svg>
               </span>
-              kikuldetespdf.hu
+              <span className="truncate">kikuldetespdf.hu</span>
             </Link>
 
             {/* Desktop: links + CTA */}
-            <div className="hidden sm:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-6">
               {navLinks.map(({ href, label }) => (
                 <Link key={href} href={href} className="nav-link-calm text-body-sm">
                   {label}
@@ -46,19 +46,19 @@ export default function Nav() {
               </Link>
             </div>
 
-            {/* Mobile: hamburger */}
-            <div className="flex sm:hidden items-center gap-2">
-              <Link href="/generate" className="btn-primary text-sm px-4 py-2">
+            {/* Mobile: CTA + hamburger */}
+            <div className="flex md:hidden items-center gap-1.5 sm:gap-2 shrink-0">
+              <Link href="/generate" className="btn-primary text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 whitespace-nowrap">
                 PDF
               </Link>
               <button
                 type="button"
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="flex items-center justify-center w-10 h-10 transition-transform duration-200 hover:scale-105 active:scale-95"
+                className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg transition-transform duration-200 hover:scale-105 active:scale-95"
                 aria-label={mobileOpen ? 'Menü bezárása' : 'Menü megnyitása'}
                 aria-expanded={mobileOpen}
               >
-                <svg className="w-6 h-6 text-neutral-900" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-neutral-900" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>

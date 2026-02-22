@@ -36,10 +36,10 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 export default function Footer() {
   return (
     <footer className="bg-[var(--calm-bg)] mt-auto w-full">
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 sm:py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 xl:gap-12 w-full max-w-full">
+      <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 md:py-14">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-8 xl:gap-12 w-full max-w-full">
           {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-1 min-w-0">
+          <div className="col-span-2 lg:col-span-1 min-w-0">
             <Link
               href="/"
               className="inline-flex items-center gap-2 font-sans text-caption uppercase font-medium text-neutral-900 hover:text-neutral-800 transition-colors"
@@ -115,7 +115,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <p className="text-body-sm text-neutral-600">
             © {new Date().getFullYear()} kikuldetespdf.hu
           </p>

@@ -55,7 +55,7 @@ export default function RootLayout({
           `}
         </Script>
         <Nav />
-        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 flex-1 w-full">
+        <main className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 md:py-16 flex-1 w-full">
           {children}
         </main>
         <Footer />

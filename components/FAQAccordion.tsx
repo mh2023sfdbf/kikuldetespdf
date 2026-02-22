@@ -8,13 +8,13 @@ export default function FAQAccordion({ items }: { items: FAQItem[] }) {
   const [selected, setSelected] = useState<number | null>(null)
 
   return (
-    <section id="faq" className="relative py-16 md:py-24 bg-[var(--calm-bg)]">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="mb-12 md:mb-16">
-          <h2 className="font-heading font-bold text-heading-1 md:text-display text-neutral-900 mb-3">
+    <section id="faq" className="relative py-10 sm:py-16 md:py-24 bg-[var(--calm-bg)]">
+      <div className="mx-auto px-0 sm:px-4 max-w-4xl">
+        <div className="mb-8 sm:mb-12 md:mb-16">
+          <h2 className="font-heading font-bold text-[1.375rem] sm:text-heading-1 md:text-display text-neutral-900 mb-2 sm:mb-3">
             Gyakran ismételt kérdések
           </h2>
-          <p className="text-body sm:text-body-lg text-neutral-600">
+          <p className="text-body-sm sm:text-body text-neutral-600">
             A kiküldetési PDF generátorral kapcsolatos gyakori kérdések és válaszok.
           </p>
         </div>
