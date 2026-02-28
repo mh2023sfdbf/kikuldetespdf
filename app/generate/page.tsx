@@ -168,6 +168,14 @@ export default function GeneratePage() {
       a.download = filename
       a.click()
       URL.revokeObjectURL(a.href)
+
+      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', 'pdf_download', {
+          event_category: 'pdf',
+          event_label: body.type,
+          value: 1,
+        })
+      }
     } finally {
       setDownloading(false)
     }
