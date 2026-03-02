@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useForm, useFieldArray, type UseFormRegister, type Control, type FieldErrors } from 'react-hook-form'
 import { motion, AnimatePresence } from 'framer-motion'
 import { foreignTripSchema, domesticTripSchema, type ForeignTripData, type DomesticTripData } from '@/lib/schemas'
@@ -11,6 +11,7 @@ import { StepPerdiem } from '@/components/wizard/StepPerdiem'
 import { StepCostsForeign, StepCostsDomestic } from '@/components/wizard/StepCosts'
 import { StepSignatures } from '@/components/wizard/StepSignatures'
 import { Button } from '@/components/ui/Button'
+import PdfPreview, { type SignaturePosition } from '@/components/PdfPreview'
 
 const STEPS = [
   'Típus',
@@ -87,6 +88,9 @@ export default function GeneratePage() {
   const [step, setStep] = useState(0)
   const [tripType, setTripType] = useState<'kulfoldi' | 'belfoldi'>('kulfoldi')
   const [downloading, setDownloading] = useState(false)
+  const [previewing, setPreviewing] = useState(false)
+  const [previewBytes, setPreviewBytes] = useState<Uint8Array | null>(null)
+  const sigPositionsRef = useRef<{ employee: SignaturePosition | null; orderedBy: SignaturePosition | null }>({ employee: null, orderedBy: null })
 
   const isForeign = tripType === 'kulfoldi'
 
@@ -138,22 +142,63 @@ export default function GeneratePage() {
     }
   }
 
-  const onDownloadPdf = async () => {
-    setDownloading(true)
+  const validatePayload = () => {
+    const body = buildPayload()
+    const schema = body.type === 'kulfoldi' ? foreignTripSchema : domesticTripSchema
+    const result = schema.safeParse(body.payload)
+    if (!result.success) {
+      const first = result.error.flatten().fieldErrors
+      const msg = Object.entries(first).map(([k, v]) => `${k}: ${(v as string[])?.[0] ?? ''}`).join(', ')
+      alert(`Kérjük, töltse ki a kötelező mezőket: ${msg}`)
+      return null
+    }
+    return body
+  }
+
+  const onGeneratePreview = async () => {
+    const body = validatePayload()
+    if (!body) return
+    setPreviewing(true)
     try {
-      const body = buildPayload()
-      const schema = body.type === 'kulfoldi' ? foreignTripSchema : domesticTripSchema
-      const result = schema.safeParse(body.payload)
-      if (!result.success) {
-        const first = result.error.flatten().fieldErrors
-        const msg = Object.entries(first).map(([k, v]) => `${k}: ${(v as string[])?.[0] ?? ''}`).join(', ')
-        alert(`Kérjük, töltse ki a kötelező mezőket: ${msg}`)
-        return
+      const previewPayload = {
+        ...body,
+        payload: {
+          ...body.payload,
+          signatures: { orderedBySignature: undefined, employeeSignature: undefined },
+        },
       }
       const res = await fetch('/api/pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify(previewPayload),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        alert(err?.detail ?? err?.error ?? 'Hiba történt az előnézet generálása közben.')
+        return
+      }
+      const buf = await res.arrayBuffer()
+      setPreviewBytes(new Uint8Array(buf))
+    } finally {
+      setPreviewing(false)
+    }
+  }
+
+  const onDownloadPdf = async () => {
+    const body = validatePayload()
+    if (!body) return
+    setDownloading(true)
+    try {
+      const sigPos = sigPositionsRef.current
+      const hasPositions = sigPos.employee || sigPos.orderedBy
+      const downloadBody = hasPositions
+        ? { ...body, signaturePositions: sigPos }
+        : body
+
+      const res = await fetch('/api/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(downloadBody),
       })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
@@ -180,6 +225,10 @@ export default function GeneratePage() {
       setDownloading(false)
     }
   }
+
+  const handlePositionsChange = useCallback((positions: { employee: SignaturePosition | null; orderedBy: SignaturePosition | null }) => {
+    sigPositionsRef.current = positions
+  }, [])
 
   const canNext = () => {
     if (step === 0) return true
@@ -268,13 +317,35 @@ export default function GeneratePage() {
         )}
         {step === 6 && (
           <motion.div key="6" initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-            <div className="glass-card p-6">
+            <div className="glass-card p-4 sm:p-6">
               <p className="text-neutral-700 mb-4">
-                Összefoglaló: {tripType === 'kulfoldi' ? 'Külföldi' : 'Belföldi'} kiküldetés – {watch('employeeName')} – {watch('purposeText')?.slice(0, 50)}…
+                {tripType === 'kulfoldi' ? 'Külföldi' : 'Belföldi'} kiküldetés – {watch('employeeName')} – {watch('purposeText')?.slice(0, 50)}…
               </p>
-              <Button type="button" onClick={onDownloadPdf} disabled={downloading}>
-                {downloading ? 'Generálás…' : 'PDF letöltése'}
-              </Button>
+
+              {!previewBytes && (
+                <Button type="button" onClick={onGeneratePreview} disabled={previewing}>
+                  {previewing ? 'Előnézet generálása…' : 'Előnézet megtekintése'}
+                </Button>
+              )}
+
+              {previewBytes && (
+                <div className="space-y-4">
+                  <PdfPreview
+                    pdfBytes={previewBytes}
+                    employeeSignature={watch('signatures')?.employeeSignature || null}
+                    orderedBySignature={watch('signatures')?.orderedBySignature || null}
+                    onPositionsChange={handlePositionsChange}
+                  />
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button type="button" onClick={onDownloadPdf} disabled={downloading}>
+                      {downloading ? 'Generálás…' : 'PDF letöltése'}
+                    </Button>
+                    <Button type="button" variant="ghost" onClick={onGeneratePreview} disabled={previewing}>
+                      {previewing ? 'Frissítés…' : 'Előnézet frissítése'}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

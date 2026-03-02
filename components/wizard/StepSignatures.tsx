@@ -60,7 +60,7 @@ export function StepSignatures({
         </div>
       </div>
       <p className="text-sm text-neutral-600">
-        Töltsön fel PNG vagy JPEG képet az aláírásról (pl. szkennelt aláírás). Opcionális; a PDF-ben üres aláírási mező is megjelenik.
+        Opcionális. Az összefoglaló lépésben az aláírásokat a kívánt pozícióba húzhatja a PDF előnézeten.
       </p>
     </div>
   )

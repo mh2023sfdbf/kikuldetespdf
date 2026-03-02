@@ -238,7 +238,16 @@ function getTemplateBuffer(type: 'kulfoldi' | 'belfoldi'): Promise<Uint8Array> {
   return type === 'kulfoldi' ? createMinimalKulfoldiTemplate() : createMinimalBelfoldiTemplate()
 }
 
-export async function fillKulfoldiPdf(data: ForeignTripData): Promise<Uint8Array> {
+export interface SignaturePositions {
+  employee?: { xPct: number; yPct: number } | null
+  orderedBy?: { xPct: number; yPct: number } | null
+}
+
+function pctToPoint(pct: number, dimension: number): number {
+  return (pct / 100) * dimension
+}
+
+export async function fillKulfoldiPdf(data: ForeignTripData, sigPositions?: SignaturePositions): Promise<Uint8Array> {
   const templateBuffer = await getTemplateBuffer('kulfoldi')
   const doc = await PDFDocument.load(templateBuffer)
   const customFont = await loadHungarianFont(doc)
@@ -342,17 +351,29 @@ export async function fillKulfoldiPdf(data: ForeignTripData): Promise<Uint8Array
   drawTextLine(page, font, 'Aláírás (elrendelő)', MARGIN_X + 280, TOP_SIGNATURE_LABELS_FOREIGN, LABEL_SIZE, useHungarian)
 
   if (data.signatures?.employeeSignature) {
-    await drawSignature(page, data.signatures.employeeSignature, MARGIN_X, fromTop(TOP_SIGNATURE_LABELS_FOREIGN - 8))
+    if (sigPositions?.employee) {
+      const sx = pctToPoint(sigPositions.employee.xPct, A4.width)
+      const sy = pctToPoint(sigPositions.employee.yPct, A4.height)
+      await drawSignature(page, data.signatures.employeeSignature, sx, A4.height - sy - 40)
+    } else {
+      await drawSignature(page, data.signatures.employeeSignature, MARGIN_X, fromTop(TOP_SIGNATURE_LABELS_FOREIGN - 8))
+    }
   }
   if (data.signatures?.orderedBySignature) {
-    await drawSignature(page, data.signatures.orderedBySignature, MARGIN_X + 280, fromTop(TOP_SIGNATURE_LABELS_FOREIGN - 8))
+    if (sigPositions?.orderedBy) {
+      const sx = pctToPoint(sigPositions.orderedBy.xPct, A4.width)
+      const sy = pctToPoint(sigPositions.orderedBy.yPct, A4.height)
+      await drawSignature(page, data.signatures.orderedBySignature, sx, A4.height - sy - 40)
+    } else {
+      await drawSignature(page, data.signatures.orderedBySignature, MARGIN_X + 280, fromTop(TOP_SIGNATURE_LABELS_FOREIGN - 8))
+    }
   }
 
   drawBrandFooter(page, font, useHungarian)
   return doc.save()
 }
 
-export async function fillBelfoldiPdf(data: DomesticTripData): Promise<Uint8Array> {
+export async function fillBelfoldiPdf(data: DomesticTripData, sigPositions?: SignaturePositions): Promise<Uint8Array> {
   const templateBuffer = await getTemplateBuffer('belfoldi')
   const doc = await PDFDocument.load(templateBuffer)
   const customFont = await loadHungarianFont(doc)
@@ -415,10 +436,22 @@ export async function fillBelfoldiPdf(data: DomesticTripData): Promise<Uint8Arra
   drawTextLine(page, font, 'Aláírás (elrendelő)', MARGIN_X + 280, TOP_SIGNATURE_LABELS_DOMESTIC, LABEL_SIZE, useHungarian)
 
   if (data.signatures?.employeeSignature) {
-    await drawSignature(page, data.signatures.employeeSignature, MARGIN_X, fromTop(TOP_SIGNATURE_LABELS_DOMESTIC - 8))
+    if (sigPositions?.employee) {
+      const sx = pctToPoint(sigPositions.employee.xPct, A4.width)
+      const sy = pctToPoint(sigPositions.employee.yPct, A4.height)
+      await drawSignature(page, data.signatures.employeeSignature, sx, A4.height - sy - 40)
+    } else {
+      await drawSignature(page, data.signatures.employeeSignature, MARGIN_X, fromTop(TOP_SIGNATURE_LABELS_DOMESTIC - 8))
+    }
   }
   if (data.signatures?.orderedBySignature) {
-    await drawSignature(page, data.signatures.orderedBySignature, MARGIN_X + 280, fromTop(TOP_SIGNATURE_LABELS_DOMESTIC - 8))
+    if (sigPositions?.orderedBy) {
+      const sx = pctToPoint(sigPositions.orderedBy.xPct, A4.width)
+      const sy = pctToPoint(sigPositions.orderedBy.yPct, A4.height)
+      await drawSignature(page, data.signatures.orderedBySignature, sx, A4.height - sy - 40)
+    } else {
+      await drawSignature(page, data.signatures.orderedBySignature, MARGIN_X + 280, fromTop(TOP_SIGNATURE_LABELS_DOMESTIC - 8))
+    }
   }
 
   drawBrandFooter(page, font, useHungarian)

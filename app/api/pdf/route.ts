@@ -44,9 +44,11 @@ export async function POST(req: NextRequest) {
     const json = await req.json()
     const parsed = apiPdfBodySchema.parse(json)
 
+    const sigPositions = parsed.signaturePositions ?? undefined
+
     if (parsed.type === 'kulfoldi') {
       const payload = computeForeignDerived(parsed.payload)
-      const pdfBuffer = await fillKulfoldiPdf(payload)
+      const pdfBuffer = await fillKulfoldiPdf(payload, sigPositions)
       const filename = 'kulfoldi-kikuldetesi-utasitas.pdf'
       return new Response(pdfBuffer, {
         status: 200,
@@ -58,7 +60,7 @@ export async function POST(req: NextRequest) {
     }
 
     const payload = computeDomesticDerived(parsed.payload)
-    const pdfBuffer = await fillBelfoldiPdf(payload)
+    const pdfBuffer = await fillBelfoldiPdf(payload, sigPositions)
     const filename = 'belfoldi-kikuldetesi-utasitas.pdf'
     return new Response(pdfBuffer, {
       status: 200,

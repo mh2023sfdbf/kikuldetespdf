@@ -162,10 +162,29 @@ export const domesticTripSchema = z
 
 export type DomesticTripData = z.infer<typeof domesticTripSchema>
 
+export const signaturePositionSchema = z.object({
+  xPct: z.number().min(0).max(100),
+  yPct: z.number().min(0).max(100),
+})
+
 // —— API payload: type + payload ——
 export const apiPdfBodySchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('kulfoldi'), payload: foreignTripSchema }),
-  z.object({ type: z.literal('belfoldi'), payload: domesticTripSchema }),
+  z.object({
+    type: z.literal('kulfoldi'),
+    payload: foreignTripSchema,
+    signaturePositions: z.object({
+      employee: signaturePositionSchema.nullable().optional(),
+      orderedBy: signaturePositionSchema.nullable().optional(),
+    }).optional(),
+  }),
+  z.object({
+    type: z.literal('belfoldi'),
+    payload: domesticTripSchema,
+    signaturePositions: z.object({
+      employee: signaturePositionSchema.nullable().optional(),
+      orderedBy: signaturePositionSchema.nullable().optional(),
+    }).optional(),
+  }),
 ])
 
 export type ApiPdfBody = z.infer<typeof apiPdfBodySchema>
