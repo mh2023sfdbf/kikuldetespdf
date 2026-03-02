@@ -1,4 +1,8 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
+import ContactModal from '@/components/ContactModal'
 
 const landingPages = [
   { href: '/kikuldetesi-rendelveny', label: 'Kiküldetési rendelvény' },
@@ -34,6 +38,8 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 }
 
 export default function Footer() {
+  const [contactOpen, setContactOpen] = useState(false)
+
   return (
     <footer className="bg-[var(--calm-bg)] mt-auto w-full">
       <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 md:py-14">
@@ -100,10 +106,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Jogi */}
+          {/* Jogi & Kapcsolat */}
           <div className="min-w-0">
             <h3 className="font-sans text-caption uppercase font-medium text-neutral-900 tracking-wide mb-4">
-              Jogi
+              Jogi & Kapcsolat
             </h3>
             <ul className="space-y-2">
               {legalLinks.map(({ href, label }) => (
@@ -111,6 +117,15 @@ export default function Footer() {
                   <FooterLink href={href} label={label} />
                 </li>
               ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setContactOpen(true)}
+                  className="footer-link text-body-sm text-neutral-700 hover:text-neutral-900 transition-colors"
+                >
+                  Kapcsolat
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -127,6 +142,7 @@ export default function Footer() {
           </Link>
         </div>
       </div>
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </footer>
   )
 }
