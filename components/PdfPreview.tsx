@@ -39,6 +39,7 @@ export default function PdfPreview({
     let cancelled = false
 
     async function render() {
+      if (!pdfBytes) return
       const pdfjsLib = await import('pdfjs-dist')
       pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`
 
