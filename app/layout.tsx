@@ -22,10 +22,10 @@ export const metadata = {
     template: '%s | kikuldetespdf.hu',
   },
   description:
-    'Belföldi és külföldi kiküldetési utasítás és költségelszámolás PDF generátor. NAV-barát sablonok, egyszerű űrlap.',
+    'Belföldi és külföldi kiküldetési költségelszámolás PDF generátor könyveléshez. Egyszerűen kitölthető, és azonnal letölthető.',
   openGraph: {
     title: 'kikuldetespdf.hu | Kiküldetési rendelvény PDF generálása',
-    description: 'Kiküldetési utasítás és költségelszámolás PDF generátor.',
+    description: 'Belföldi és külföldi kiküldetési költségelszámolás PDF generátor könyveléshez. Egyszerűen kitölthető, és azonnal letölthető.',
   },
   icons: {
     icon: '/favicon.svg',
